@@ -90,7 +90,7 @@ public class LoginServlet extends HttpServlet {
                         session.setAttribute("customer", customer);
                         session.setAttribute("fullname", customer != null ? customer.getUsername() : username);
                         
-                        response.sendRedirect("customerDashboard.jsp");
+                        response.sendRedirect("product.jsp");
                         return;
                     } else {
                         errorMessage = "Invalid customer credentials!";
