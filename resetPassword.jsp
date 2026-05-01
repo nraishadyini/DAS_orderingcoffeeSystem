@@ -157,7 +157,7 @@
 <body>
 
 <div class="container">
-    <h2>🔐 Reset Password</h2>
+    <h2>? Reset Password</h2>
     
     <div class="message <%= messageType %>">
         <%= message %>
@@ -170,13 +170,13 @@
             <input type="password" name="newPassword" placeholder="New Password" required>
             <input type="password" name="confirmPassword" placeholder="Confirm New Password" required>
             <div class="password-requirements">
-                ⚠️ Password must be at least 6 characters long
+                ?? Password must be at least 6 characters long
             </div>
             <button type="submit">Update Password</button>
         </form>
     <% } %>
     
-    <a href="login.jsp">← Back to Login</a>
+    <a href="login.jsp">? Back to Login</a>
 </div>
 
 </body>
