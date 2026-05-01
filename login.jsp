@@ -144,7 +144,7 @@
 <body>
 
 <div class="container">
-    <h2>☕ Coffee Shop System</h2>
+    <h2>? Coffee Shop System</h2>
     <h3>Login</h3>
     
     <form action="LoginServlet" method="post">
@@ -185,17 +185,17 @@
     <hr>
     
     <div class="links-container">
-        <a href="register.jsp">🆕 New Customer? Register here</a>
+        <a href="register.jsp">? New Customer? Register here</a>
     </div>
     
     <!-- Optional: Show test credentials for staff -->
     <div class="credentials-info">
-        <strong>📋 Staff Test Credentials:</strong>
-        <p>👔 Manager: admin / 1234</p>
-        <p>💰 Cashier: cashier1 / cashier123 or cashier2 / cashier456</p>
-        <p>☕ Barista: barista1 / barista123 or barista2 / barista456</p>
-        <p>👤 Customer: Register first, then login</p>
-        <p>🔐 <a href="forgot.jsp" style="display: inline; font-size: 11px;">Forgot your password?</a></p>
+        <strong>? Staff Test Credentials:</strong>
+        <p>? Manager: admin / 1234</p>
+        <p>? Cashier: cashier1 / cashier123 or cashier2 / cashier456</p>
+        <p>? Barista: barista1 / barista123 or barista2 / barista456</p>
+        <p>? Customer: Register first, then login</p>
+        <p>? <a href="forgot.jsp" style="display: inline; font-size: 11px;">Forgot your password?</a></p>
     </div>
 </div>
 
