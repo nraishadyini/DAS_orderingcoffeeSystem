@@ -46,7 +46,20 @@ create table product(
     size varchar(15),
     availability_status varchar(15)
     )auto_increment=1000;
-    
+
+create table payment(
+    create table payment (
+    paymentID int primary key auto_increment,
+    orderID int,
+    userID int,
+    paymentType varchar(15),
+    paymentStatus varchar(15),
+    paymentDate DATE,
+    paymentAmount decimal(9,2),
+    foreign key (orderID) references orders(orderID),
+    foreign key (userID) references customer(userID)
+    )auto_increment=1000;
+
 create table orderItem(
     orderItemID int primary key not null auto_increment,
     orderID int,
