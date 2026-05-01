@@ -29,6 +29,7 @@ create table storeManager(
     email varchar(30),
     phoneNumber varchar(12)
     )auto_increment=400;
+
 create table orders(
     orderID int primary key not null auto_increment,
     userID int,
