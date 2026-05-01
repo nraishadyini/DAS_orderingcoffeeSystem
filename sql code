@@ -1,0 +1,78 @@
+use dassystem;
+create table customer(
+    userID int primary key not null auto_increment,
+    username varchar(15),
+    password varchar(8),
+    email varchar(30),
+    phoneNumber varchar(12)
+    )auto_increment=100;
+    
+create table barista(
+    userID int primary key not null auto_increment,
+    username varchar(15),
+    password varchar(8),
+    shift varchar(15)
+    )auto_increment=200;
+    
+create table cashier(
+    userID int primary key not null auto_increment,
+    username varchar(15),
+    password varchar(8),
+    shift varchar(15),
+    phoneNumber varchar(12)
+    )auto_increment=300;
+    
+create table storeManager(
+    userID int primary key not null auto_increment,
+    username varchar(15),
+    password varchar(8),
+    email varchar(30),
+    phoneNumber varchar(12)
+    )auto_increment=400;
+create table orders(
+    orderID int primary key not null auto_increment,
+    userID int,
+    orderDate date,
+    orderStatus varchar(15),
+    orderTime varchar(15),
+    foreign key (userID) references customer(userID)
+    )auto_increment=1000;
+    
+create table product(
+    productID int primary key not null auto_increment,
+    productName varchar(30),
+    price decimal(9,2),
+    size varchar(15),
+    availability_status varchar(15)
+    )auto_increment=1000;
+    
+create table orderItem(
+    orderItemID int primary key not null auto_increment,
+    orderID int,
+    productID int,
+    quantity int,
+    subtotal int,
+    foreign key (orderID) references orders(orderID),
+    foreign key (productID) references product(productID)
+    )auto_increment=1;
+insert into customer(username,password,email,phoneNumber)
+values 
+('aidan','@1sampai','aidan@gmail.com','012-3456765'),
+('lunara','@Lun@ra','lunara@gmail.com','013-4567342');
+
+create table if not exists password_resets (
+    resetID int auto_increment primary key,
+    userID INT not null,
+    token VARCHAR(255) not null,
+    expiry_time datetime not null,
+    created_at timestamp default current_timestamp,
+    INDEX idx_token (token),
+    INDEX idx_userID (userID),
+    INDEX idx_expiry_time (expiry_time),
+    -- Foreign Key to customer table
+    constraint fk_password_resets_customer 
+        foreign key (userID) 
+        references customer(userID) 
+        on delete cascade 
+        on update cascade
+) ENGINE=InnoDB default CHARSET=utf8mb4;
