@@ -118,7 +118,7 @@
 <body>
 
 <div class="container">
-    <h2>🔐 Forgot Password?</h2>
+    <h2>? Forgot Password?</h2>
     <h3>Reset your account password</h3>
     
     <p>Enter your username to receive a password reset link.</p>
@@ -144,18 +144,18 @@
     <hr>
     
     <div class="back-link">
-        <a href="login.jsp">← Back to Login</a>
+        <a href="login.jsp">? Back to Login</a>
     </div>
     
     <div class="info">
-        <strong>📝 How it works:</strong><br>
-        • Enter your registered username<br>
-        • A reset link will be generated (check console for demo)<br>
-        • Click the link to reset your password<br>
-        • Reset link expires in 1 hour<br><br>
-        <strong>⚠️ Note:</strong><br>
-        • For customer accounts only<br>
-        • Staff accounts (Manager/Cashier/Barista) - contact administrator
+        <strong>? How it works:</strong><br>
+        ? Enter your registered username<br>
+        ? A reset link will be generated (check console for demo)<br>
+        ? Click the link to reset your password<br>
+        ? Reset link expires in 1 hour<br><br>
+        <strong>?? Note:</strong><br>
+        ? For customer accounts only<br>
+        ? Staff accounts (Manager/Cashier/Barista) - contact administrator
     </div>
 </div>
 
