@@ -2,7 +2,7 @@
     Document   : product
     Created on : Apr 29, 2026
     Author     : auni
-    Description: Display all products from database
+    Description: Display all products from database in grid layout (Display Only)
 --%>
 
 <%@ page import="java.sql.*, java.util.*" %>
@@ -15,12 +15,6 @@
     }
     
     String username = (String) session.getAttribute("username");
-    int userID = 0;
-    
-    // Get userID from session
-    if(session.getAttribute("userID") != null) {
-        userID = (int) session.getAttribute("userID");
-    }
 %>
 
 <!DOCTYPE html>
@@ -50,31 +44,12 @@
             position: sticky;
             top: 0;
             z-index: 100;
+            flex-wrap: wrap;
+            gap: 15px;
         }
         
         .logo h2 { color: #efebe9; }
         .logo a { text-decoration: none; color: white; }
-        
-        .cart-icon {
-            background: #6d4c41;
-            padding: 8px 15px;
-            border-radius: 20px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .cart-count {
-            background: #ff9800;
-            border-radius: 50%;
-            width: 22px;
-            height: 22px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-        }
         
         .back-btn {
             background: #8d6e63;
@@ -82,6 +57,11 @@
             padding: 8px 15px;
             text-decoration: none;
             border-radius: 5px;
+            transition: background 0.2s;
+        }
+        
+        .back-btn:hover {
+            background: #5d4037;
         }
         
         /* Main Container */
@@ -102,6 +82,7 @@
         }
         
         .welcome-banner h1 { font-size: 28px; margin-bottom: 10px; }
+        .welcome-banner p { font-size: 16px; opacity: 0.9; }
         
         /* Category Filter */
         .category-filter {
@@ -121,11 +102,13 @@
             transition: all 0.3s;
             color: #4e342e;
             font-size: 14px;
+            font-weight: 500;
         }
         
         .category-btn:hover, .category-btn.active {
             background: #6d4c41;
             color: white;
+            transform: translateY(-2px);
         }
         
         /* Products Grid */
@@ -178,23 +161,7 @@
         .product-size {
             font-size: 12px;
             color: #8d6e63;
-            margin-bottom: 15px;
-        }
-        
-        .add-to-cart-btn {
-            background: #6d4c41;
-            color: white;
-            border: none;
-            padding: 10px;
-            border-radius: 8px;
-            cursor: pointer;
-            width: 100%;
-            font-size: 14px;
-            transition: background 0.3s;
-        }
-        
-        .add-to-cart-btn:hover {
-            background: #5d4037;
+            margin-bottom: 5px;
         }
         
         /* Loading Spinner */
@@ -205,95 +172,18 @@
             font-size: 18px;
         }
         
-        /* Cart Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.5);
-            overflow-y: auto;
-        }
-        
-        .modal-content {
-            background-color: #efebe9;
-            margin: 50px auto;
-            padding: 30px;
+        /* Empty State */
+        .empty-products {
+            text-align: center;
+            padding: 60px;
+            background: #efebe9;
             border-radius: 15px;
-            width: 90%;
-            max-width: 500px;
-            position: relative;
-            animation: slideDown 0.3s ease;
-        }
-        
-        @keyframes slideDown {
-            from { transform: translateY(-50px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-        
-        .close {
-            position: absolute;
-            right: 20px;
-            top: 15px;
-            font-size: 28px;
-            cursor: pointer;
             color: #6d4c41;
         }
         
-        .cart-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px 0;
-            border-bottom: 1px solid #d7ccc8;
-        }
-        
-        .remove-item {
-            color: #f44336;
-            cursor: pointer;
-            margin-left: 10px;
-        }
-        
-        .submit-btn {
-            background: #6d4c41;
-            color: white;
-            padding: 12px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            width: 100%;
-            margin-top: 15px;
-            font-size: 16px;
-        }
-        
-        .total-display {
-            text-align: right;
-            font-weight: bold;
-            margin-top: 15px;
-            padding-top: 10px;
-            font-size: 18px;
-        }
-        
-        /* Notification */
-        .notification {
-            position: fixed;
-            top: 80px;
-            right: 20px;
-            padding: 15px 20px;
-            border-radius: 8px;
-            color: white;
-            z-index: 1100;
-            animation: slideIn 0.3s;
-        }
-        
-        .notification.success { background: #4caf50; }
-        .notification.error { background: #f44336; }
-        
-        @keyframes slideIn {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
+        .empty-products .icon {
+            font-size: 64px;
+            margin-bottom: 20px;
         }
         
         /* Footer */
@@ -306,8 +196,20 @@
         }
         
         @media (max-width: 768px) {
-            .header { flex-direction: column; gap: 15px; text-align: center; }
-            .products-grid { grid-template-columns: 1fr; }
+            .header {
+                flex-direction: column;
+                text-align: center;
+            }
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+            .category-filter {
+                gap: 8px;
+            }
+            .category-btn {
+                padding: 6px 15px;
+                font-size: 12px;
+            }
         }
     </style>
 </head>
@@ -317,49 +219,36 @@
 <div class="header">
     <div class="logo">
         <a href="customerDashboard.jsp">
-            <h2>☕ Coffee Shop</h2>
+            <h2> Coffee Shop</h2>
         </a>
     </div>
-    <div style="display: flex; gap: 15px; align-items: center;">
-        <div class="cart-icon" onclick="openCartModal()">
-            🛒 Cart <span class="cart-count" id="cartCount">0</span>
-        </div>
-        <a href="customerDashboard.jsp" class="back-btn">← Dashboard</a>
+    <div class="header-actions">
+        <a href="customerDashboard.jsp" class="back-btn">? Back to Dashboard</a>
     </div>
 </div>
 
 <!-- Main Content -->
 <div class="container">
     <div class="welcome-banner">
-        <h1>☕ Our Premium Menu</h1>
+        <h1> Our Premium Menu</h1>
         <p>Browse our selection of finest coffee, tea, pastries, and more!</p>
     </div>
     
     <!-- Category Filter -->
     <div class="category-filter" id="categoryFilter">
         <button class="category-btn active" data-category="all">All</button>
-        <button class="category-btn" data-category="Coffee">☕ Coffee</button>
-        <button class="category-btn" data-category="Tea">🍵 Tea</button>
-        <button class="category-btn" data-category="Pastry">🥐 Pastry</button>
-        <button class="category-btn" data-category="Cake">🍰 Cake</button>
-        <button class="category-btn" data-category="Sandwich">🥪 Sandwich</button>
-        <button class="category-btn" data-category="Specialty">✨ Specialty</button>
+        <button class="category-btn" data-category="Coffee"> Coffee</button>
+        <button class="category-btn" data-category="Tea">Tea</button>
+        <button class="category-btn" data-category="Pastry"> Pastry</button>
+        <button class="category-btn" data-category="Cake"> Cake</button>
+        <button class="category-btn" data-category="Sandwich"> Sandwich</button>
+        <button class="category-btn" data-category="Specialty">Specialty</button>
+        <button class="category-btn" data-category="Addons"> Add-ons</button>
     </div>
     
     <!-- Products Grid -->
     <div class="products-grid" id="productsGrid">
         <div class="loading">Loading delicious products...</div>
-    </div>
-</div>
-
-<!-- Cart Modal -->
-<div id="cartModal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeCartModal()">&times;</span>
-        <h3>🛒 Your Cart</h3>
-        <div id="cartItemsList"></div>
-        <div id="cartTotalDisplay" class="total-display"></div>
-        <button class="submit-btn" onclick="placeOrder()">Place Order</button>
     </div>
 </div>
 
@@ -370,28 +259,37 @@
 </div>
 
 <script>
-    let cart = [];
     let allProducts = [];
-    let currentUserID = <%= userID %>;
-    let currentUsername = "<%= username %>";
     
     // Load products on page load
     document.addEventListener('DOMContentLoaded', function() {
         loadProductsFromDatabase();
-        loadCartFromStorage();
     });
     
     // Load products from database via servlet
     function loadProductsFromDatabase() {
         fetch('ProductServlet')
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
             .then(data => {
+                console.log('Products loaded:', data.length);
                 allProducts = data;
                 displayProducts(allProducts);
             })
             .catch(error => {
                 console.error('Error loading products:', error);
-                document.getElementById('productsGrid').innerHTML = '<div style="text-align:center; padding:50px; color:#efebe9;">Error loading products. Please refresh the page.</div>';
+                document.getElementById('productsGrid').innerHTML = `
+                    <div class="empty-products">
+                        <div class="icon">??</div>
+                        <h3>Unable to load products</h3>
+                        <p>Please check your database connection and try again.</p>
+                        <button onclick="location.reload()" style="margin-top:15px; padding:10px 20px; background:#6d4c41; color:white; border:none; border-radius:5px; cursor:pointer;">Refresh</button>
+                    </div>
+                `;
             });
     }
     
@@ -399,23 +297,29 @@
         const container = document.getElementById('productsGrid');
         
         if (products.length === 0) {
-            container.innerHTML = '<div style="text-align:center; padding:50px; color:#efebe9;">No products found in this category.</div>';
+            container.innerHTML = `
+                <div class="empty-products">
+                    <div class="icon">??</div>
+                    <h3>No products found</h3>
+                    <p>No products available in this category.</p>
+                </div>
+            `;
             return;
         }
         
         let html = '';
         products.forEach(product => {
             let icon = getProductIcon(product.productName);
+            let price = parseFloat(product.price).toFixed(2);
+            let size = product.size || 'Regular';
+            
             html += `
                 <div class="product-card">
                     <div class="product-image">${icon}</div>
                     <div class="product-info">
-                        <div class="product-name">${product.productName}</div>
-                        <div class="product-price">RM ${parseFloat(product.price).toFixed(2)}</div>
-                        <div class="product-size">${product.size || 'Regular'}</div>
-                        <button class="add-to-cart-btn" onclick="addToCart(${product.productID}, '${product.productName}', ${product.price})">
-                            🛒 Add to Cart
-                        </button>
+                        <div class="product-name">${escapeHtml(product.productName)}</div>
+                        <div class="product-price">RM ${price}</div>
+                        <div class="product-size">${escapeHtml(size)}</div>
                     </div>
                 </div>
             `;
@@ -423,195 +327,23 @@
         container.innerHTML = html;
     }
     
+    
     function getProductIcon(productName) {
         const name = productName.toLowerCase();
-        if (name.includes('espresso') || name.includes('latte') || name.includes('cappuccino') || name.includes('mocha') || name.includes('americano')) return '☕';
-        if (name.includes('tea') || name.includes('matcha') || name.includes('chai')) return '🍵';
-        if (name.includes('croissant') || name.includes('muffin') || name.includes('roll')) return '🥐';
-        if (name.includes('cake') || name.includes('cheesecake') || name.includes('tiramisu')) return '🍰';
-        if (name.includes('sandwich')) return '🥪';
-        if (name.includes('frappuccino') || name.includes('cold brew')) return '🥤';
-        return '☕';
+        if (name.includes('espresso') || name.includes('latte') || name.includes('cappuccino') || 
+            name.includes('mocha') || name.includes('americano') || name.includes('caramel')) return '?';
+        if (name.includes('tea') || name.includes('matcha') || name.includes('chai')) return '?';
+        if (name.includes('croissant') || name.includes('muffin') || name.includes('roll') || name.includes('pastry')) return '?';
+        if (name.includes('cake') || name.includes('cheesecake') || name.includes('tiramisu') || 
+            name.includes('brownie') || name.includes('cookie') || name.includes('red velvet')) return '?';
+        if (name.includes('sandwich')) return '?';
+        if (name.includes('frappuccino') || name.includes('cold brew') || name.includes('signature')) return '?';
+        if (name.includes('shot') || name.includes('whipped') || name.includes('milk')) return '?';
+        return '?';
     }
     
-    // Category Filter
-    document.querySelectorAll('.category-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-            document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
-            this.classList.add('active');
-            
-            const category = this.getAttribute('data-category');
-            filterProductsByCategory(category);
-        });
-    });
     
-    function filterProductsByCategory(category) {
-        if (category === 'all') {
-            displayProducts(allProducts);
-            return;
-        }
-        
-        const filtered = allProducts.filter(product => {
-            const name = product.productName.toLowerCase();
-            switch(category) {
-                case 'Coffee': return name.includes('espresso') || name.includes('latte') || name.includes('cappuccino') || name.includes('mocha') || name.includes('americano') || name.includes('caramel');
-                case 'Tea': return name.includes('tea') || name.includes('matcha') || name.includes('chai');
-                case 'Pastry': return name.includes('croissant') || name.includes('muffin') || name.includes('roll') || name.includes('pastry');
-                case 'Cake': return name.includes('cake') || name.includes('cheesecake') || name.includes('tiramisu') || name.includes('brownie') || name.includes('cookie');
-                case 'Sandwich': return name.includes('sandwich');
-                case 'Specialty': return name.includes('signature') || name.includes('cold brew') || name.includes('frappuccino');
-                default: return true;
-            }
-        });
         displayProducts(filtered);
-    }
-    
-    // Cart Functions
-    function addToCart(productID, productName, price) {
-        const existingItem = cart.find(item => item.productID === productID);
-        
-        if (existingItem) {
-            existingItem.quantity++;
-            existingItem.subtotal = existingItem.price * existingItem.quantity;
-        } else {
-            cart.push({
-                productID: productID,
-                name: productName,
-                price: price,
-                quantity: 1,
-                subtotal: price
-            });
-        }
-        
-        updateCartDisplay();
-        saveCartToStorage();
-        showNotification(productName + ' added to cart!', 'success');
-        
-        // Animate cart icon
-        const cartIcon = document.querySelector('.cart-icon');
-        cartIcon.style.transform = 'scale(1.1)';
-        setTimeout(() => { cartIcon.style.transform = ''; }, 200);
-    }
-    
-    function updateCartDisplay() {
-        const cartCountSpan = document.getElementById('cartCount');
-        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-        cartCountSpan.textContent = totalItems;
-    }
-    
-    function openCartModal() {
-        const modal = document.getElementById('cartModal');
-        const cartItemsList = document.getElementById('cartItemsList');
-        const cartTotalDisplay = document.getElementById('cartTotalDisplay');
-        
-        if (cart.length === 0) {
-            cartItemsList.innerHTML = '<p style="text-align:center; padding:20px;">Your cart is empty.</p>';
-            cartTotalDisplay.innerHTML = '';
-        } else {
-            let html = '';
-            let total = 0;
-            cart.forEach((item, index) => {
-                total += item.subtotal;
-                html += `
-                    <div class="cart-item">
-                        <span>${item.quantity}x ${item.name}</span>
-                        <span>RM ${item.subtotal.toFixed(2)} 
-                            <span class="remove-item" onclick="removeFromCart(${index})">🗑️</span>
-                        </span>
-                    </div>
-                `;
-            });
-            cartItemsList.innerHTML = html;
-            cartTotalDisplay.innerHTML = `Total: RM ${total.toFixed(2)}`;
-        }
-        modal.style.display = 'block';
-    }
-    
-    function closeCartModal() {
-        document.getElementById('cartModal').style.display = 'none';
-    }
-    
-    function removeFromCart(index) {
-        cart.splice(index, 1);
-        updateCartDisplay();
-        saveCartToStorage();
-        openCartModal(); // Refresh modal
-        showNotification('Item removed from cart', 'success');
-    }
-    
-    function placeOrder() {
-        if (cart.length === 0) {
-            showNotification('Your cart is empty!', 'error');
-            return;
-        }
-        
-        const total = cart.reduce((sum, item) => sum + item.subtotal, 0);
-        
-        if (confirm(`Total amount: RM ${total.toFixed(2)}\n\nProceed to checkout?`)) {
-            const orderData = {
-                userID: currentUserID,
-                items: cart.map(item => ({
-                    productID: item.productID,
-                    quantity: item.quantity,
-                    price: item.price
-                }))
-            };
-            
-            fetch('PlaceOrderServlet', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(orderData)
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    showNotification('✅ Order placed successfully! Order ID: ' + data.orderID, 'success');
-                    cart = [];
-                    updateCartDisplay();
-                    saveCartToStorage();
-                    closeCartModal();
-                } else {
-                    showNotification('Failed to place order: ' + data.message, 'error');
-                }
-            })
-            .catch(error => {
-                // Demo mode
-                const demoOrderID = Math.floor(Math.random() * 9000) + 1000;
-                showNotification('✅ Order placed! Order ID: ' + demoOrderID, 'success');
-                cart = [];
-                updateCartDisplay();
-                saveCartToStorage();
-                closeCartModal();
-            });
-        }
-    }
-    
-    function saveCartToStorage() {
-        sessionStorage.setItem('cart_' + currentUserID, JSON.stringify(cart));
-    }
-    
-    function loadCartFromStorage() {
-        const savedCart = sessionStorage.getItem('cart_' + currentUserID);
-        if (savedCart) {
-            cart = JSON.parse(savedCart);
-            updateCartDisplay();
-        }
-    }
-    
-    function showNotification(message, type) {
-        const notification = document.createElement('div');
-        notification.className = `notification ${type}`;
-        notification.textContent = message;
-        document.body.appendChild(notification);
-        setTimeout(() => notification.remove(), 3000);
-    }
-    
-    // Close modal on outside click
-    window.onclick = function(event) {
-        const modal = document.getElementById('cartModal');
-        if (event.target == modal) {
-            modal.style.display = 'none';
-        }
     }
 </script>
 
