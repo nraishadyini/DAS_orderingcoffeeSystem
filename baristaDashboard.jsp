@@ -7,6 +7,7 @@
 <html>
 <head>
     <title>Barista Dashboard</title>
+    
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -93,7 +94,7 @@
             padding: 5px 15px;
             border-radius: 5px;
             cursor: pointer;
-        }
+        }        
     </style>
 </head>
 <body>
@@ -130,20 +131,7 @@
         
     </div>
     
-    <div class="order-list">
-        <h3>Current Pending Orders:</h3>
-        <div class="order-item">
-            <span>Order #001 - Latte x2</span>
-            <button class="complete-btn" onclick="completeOrder(1)">Complete</button>
-        </div>
-        <div class="order-item">
-            <span>Order #002 - Cappuccino x1</span>
-            <button class="complete-btn" onclick="completeOrder(2)">Complete</button>
-        </div>
-        <div class="order-item">
-            <span>Order #003 - Americano x3</span>
-            <button class="complete-btn" onclick="completeOrder(3)">Complete</button>
-        </div>
+    
     </div>
     
     <a href="logout.jsp" class="logout">Logout</a>
