@@ -147,8 +147,7 @@
     <h2>? Coffee Shop System</h2>
     <h3>Login</h3>
     
-    <form action="LoginServlet" method="post">
-        <div class="role-selector">
+<form action="<%=request.getContextPath()%>/LoginServlet" method="post">        <div class="role-selector">
             <label>Login As:</label>
             <select name="role" required>
                 <option value="">Select Role</option>
