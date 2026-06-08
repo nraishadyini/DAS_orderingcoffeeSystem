@@ -90,3 +90,5 @@ create table if not exists password_resets (
         on delete cascade 
         on update cascade
 ) ENGINE=InnoDB default CHARSET=utf8mb4;
+
+ALTER TABLE product ADD COLUMN image_url TEXT;
